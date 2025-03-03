@@ -90,7 +90,7 @@
         
         function connectDiscord() {
             const clientId = "1344091056601301063";
-            const redirectUri = encodeURIComponent("https://faizfaiz1.github.io/robot-tax/callback");
+            const redirectUri = encodeURIComponent("https://robot-taxa.vercel.app/callback");
             const scope = "identify guilds.members.read";
             const responseType = "code";
             const discordAuthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&response_type=${responseType}&redirect_uri=${redirectUri}&scope=${scope}`;
@@ -103,7 +103,7 @@
     let banner_url = prompt("ضع رابط البنر الجديد:");
 
     let params = new URLSearchParams(window.location.search);
-    let token = params.get("token");
+    let token = params.get("MTM0NDA5MTA1NjYwMTMwMTA2Mw.GYd4ue.lOCdxaXmfmHKlk0Hl18Oe1Ar4m2X0QkOFtTtQk");
 
     if (!token) {
         alert("لم يتم العثور على توكن المصادقة!");
