@@ -166,28 +166,22 @@
             sendRequest({ banner }, 'تم تغيير البنر');
         }
 function sendRequest(data, successMessage) {
-    fetch("http://192.168.216.103:5000/update_profile", {  // ضع هنا IP السيرفر الخاص بك
+    fetch("https://your-api.vercel.app/update", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            user_id: "معرّف المستخدم الخاص بك", // تحتاج إلى الحصول عليه من Discord OAuth
-            ...data
-        })
+        body: JSON.stringify(data)
     })
     .then(response => response.json())
     .then(result => {
-        if (result.message) {
-            showNotification(successMessage);
+        if (result.error) {
+            showNotification("خطأ: " + result.error, "red");
         } else {
-            showNotification(result.error || "حدث خطأ غير معروف", "red");
+            showNotification(successMessage);
         }
     })
-    .catch(error => {
-        showNotification("فشل الاتصال بالسيرفر", "red");
-        console.error(error);
-    });
+    .catch(error => showNotification("حدث خطأ أثناء التحديث", "red"));
 }
 
     </script>
