@@ -1,67 +1,34 @@
-from flask import Flask, request, redirect, jsonify
+from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
 
-# بيانات تطبيقك في ديسكورد
-CLIENT_ID = "1344091056601301063"
-CLIENT_SECRET = "YOUR_CLIENT_SECRET"
-REDIRECT_URI = "https://faizfaiz1.github.io/robot-tax/callback"
+DISCORD_TOKEN = "توكن البوت الخاص بك"
+HEADERS = {"Authorization": f"Bot {DISCORD_TOKEN}", "Content-Type": "application/json"}
 
-# رابط طلب التوكن
-TOKEN_URL = "https://discord.com/api/oauth2/token"
-# رابط تعديل البروفايل
-USER_URL = "https://discord.com/api/v10/users/@me"
-
-@app.route('/callback')
-def callback():
-    code = request.args.get('code')
-    if not code:
-        return "لم يتم استقبال الكود", 400
-
-    # طلب الحصول على التوكن
-    data = {
-        "client_id": CLIENT_ID,
-        "client_secret": CLIENT_SECRET,
-        "grant_type": "authorization_code",
-        "code": code,
-        "redirect_uri": REDIRECT_URI
-    }
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    response = requests.post(TOKEN_URL, data=data, headers=headers)
-    token_info = response.json()
-
-    if "access_token" not in token_info:
-        return f"فشل في المصادقة: {token_info}", 400
-
-    access_token = token_info["access_token"]
-
-    # استدعاء صفحة التحكم في الحساب مع التوكن
-    return redirect(f"/profile?token={access_token}")
-
-@app.route('/update-profile', methods=['POST'])
+@app.route('/update_profile', methods=['POST'])
 def update_profile():
     data = request.json
-    token = data.get("token")
-    username = data.get("username")
-    avatar_url = data.get("avatar_url")
-    banner_url = data.get("banner_url")
+    user_id = data.get("user_id")
+    update_data = {}
 
-    if not token:
-        return jsonify({"error": "Token مفقود"}), 400
+    if data.get("username"):
+        update_data["username"] = data["username"]
+    if data.get("avatar"):
+        update_data["avatar"] = data["avatar"]
+    if data.get("banner"):
+        update_data["banner"] = data["banner"]
 
-    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-    payload = {}
+    if not update_data:
+        return jsonify({"error": "لا يوجد بيانات للتحديث"}), 400
 
-    if username:
-        payload["username"] = username
-    if avatar_url:
-        payload["avatar"] = avatar_url  # هنا تحتاج رفع الصورة إلى Base64
-    if banner_url:
-        payload["banner"] = banner_url  # نفس الأمر للبنر
+    url = f"https://discord.com/api/v10/users/@me"
+    response = requests.patch(url, json=update_data, headers=HEADERS)
 
-    response = requests.patch(USER_URL, json=payload, headers=headers)
-    return jsonify(response.json())
+    if response.status_code == 200:
+        return jsonify({"message": "تم تحديث الحساب بنجاح"})
+    else:
+        return jsonify({"error": "فشل في التحديث", "details": response.json()}), response.status_code
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
