@@ -96,6 +96,36 @@
             const discordAuthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&response_type=${responseType}&redirect_uri=${redirectUri}&scope=${scope}`;
             window.location.href = discordAuthUrl;
         }
+
+      function updateProfile() {
+    let username = prompt("أدخل الاسم الجديد:");
+    let avatar_url = prompt("ضع رابط الصورة الجديدة:");
+    let banner_url = prompt("ضع رابط البنر الجديد:");
+
+    let params = new URLSearchParams(window.location.search);
+    let token = params.get("token");
+
+    if (!token) {
+        alert("لم يتم العثور على توكن المصادقة!");
+        return;
+    }
+
+    fetch("http://localhost:5000/update-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, username, avatar_url, banner_url })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert("خطأ: " + data.error);
+        } else {
+            alert("تم التحديث بنجاح!");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
     </script>
 </body>
 </html>
