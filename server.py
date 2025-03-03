@@ -4,10 +4,9 @@ import os
 
 app = Flask(__name__)
 
-CLIENT_ID = "YOUR_CLIENT_ID"
-CLIENT_SECRET = "YOUR_CLIENT_SECRET"
-REDIRECT_URI = "https://your-api.vercel.app/callback"
-
+CLIENT_ID = "1344091056601301063"
+CLIENT_SECRET = "wy2bDpKOCm-Vx2N2YXL-XmTEULplsJ2W"
+REDIRECT_URI = "https://robot-taxa.vercel.app/callback"
 DISCORD_API_URL = "https://discord.com/api"
 
 @app.route("/")
