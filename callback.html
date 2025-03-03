@@ -141,14 +141,24 @@
             notification.classList.add('show');
             setTimeout(() => notification.classList.remove('show'), 3000);
         }
-        function changeUsername() {
-            let username = document.getElementById('username').value;
-            if (!username) {
-                showNotification('يرجى إدخال الاسم الجديد', 'red');
-                return;
-            }
-            sendRequest({ username }, 'تم تغيير الاسم');
-        }
+function changeUsername() {
+    let newUsername = document.getElementById('username').value;
+
+    if (!newUsername) {
+        showNotification('يرجى إدخال الاسم الجديد', 'red');
+        return;
+    }
+
+    fetch('https://your-server-url.com/update-username', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, newUsername })
+    })
+    .then(response => response.json())
+    .then(data => showNotification(data.message, 'green'))
+    .catch(error => showNotification('حدث خطأ أثناء التحديث', 'red'));
+}
+
         function changeAvatar() {
             let avatar = document.getElementById('avatar').value;
             if (!avatar) {
