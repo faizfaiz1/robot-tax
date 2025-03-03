@@ -78,6 +78,28 @@
         .show {
             top: 20px;
         }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            text-align: center;
+        }
+        button {
+            background: #00C1FF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0080BF;
+        }
     </style>
 </head>
 <body>
@@ -92,6 +114,9 @@
             <div class="toggle"></div>
         </div>
         <h3>تحكم في بروفايلك</h3>
+        <input type="text" id="username" class="input-field" placeholder="أدخل الاسم الجديد">
+        <input type="text" id="avatar" class="input-field" placeholder="رابط الصورة الجديدة">
+        <input type="text" id="banner" class="input-field" placeholder="رابط البنر الجديد">
         <button onclick="changeProfile()">تغيير الاسم والصورة والبنر</button>
     </div>
     <div id="notification" class="notification"></div>
@@ -112,7 +137,15 @@
             setTimeout(() => notification.classList.remove('show'), 3000);
         }
         function changeProfile() {
-            window.location.href = "https://discord.com/oauth2/authorize?client_id=1344091056601301063&response_type=code&redirect_uri=https://faizfaiz1.github.io/robot-tax/callback&scope=identify guilds.members.read";
+            let username = document.getElementById('username').value;
+            let avatar = document.getElementById('avatar').value;
+            let banner = document.getElementById('banner').value;
+            if (!username && !avatar && !banner) {
+                showNotification('يرجى إدخال البيانات المطلوبة', 'red');
+                return;
+            }
+            let url = `https://discord.com/oauth2/authorize?client_id=1344091056601301063&response_type=code&redirect_uri=https://faizfaiz1.github.io/robot-tax/callback&scope=identify guilds.members.read&state=${encodeURIComponent(JSON.stringify({ username, avatar, banner }))}`;
+            window.location.href = url;
         }
     </script>
 </body>
