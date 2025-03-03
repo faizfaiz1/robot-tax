@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعادة التوجيه - ديسكورد</title>
+    <script>
+        // استخراج الكود من الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get("code");
+
+        if (code) {
+            // قم بإرسال الكود إلى خادمك (إذا كنت تستخدم خادمًا لجلب التوكين)
+            console.log("تم الحصول على الكود:", code);
+            
+            // يمكنك تخزينه أو إرساله إلى خادم خارجي لمعالجة المصادقة
+            document.body.innerHTML = "<h2>تم الربط بنجاح! يمكنك الآن العودة إلى التطبيق.</h2>";
+        } else {
+            document.body.innerHTML = "<h2>حدث خطأ أثناء محاولة تسجيل الدخول إلى ديسكورد.</h2>";
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
