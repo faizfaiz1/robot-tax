@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-DISCORD_TOKEN = "توكن البوت الخاص بك"
+DISCORD_TOKEN = "MTM0NDA5MTA1NjYwMTMwMTA2Mw.GYd4ue.lOCdxaXmfmHKlk0Hl18Oe1Ar4m2X0QkOFtTtQk"
 HEADERS = {"Authorization": f"Bot {DISCORD_TOKEN}", "Content-Type": "application/json"}
 
 @app.route('/update_profile', methods=['POST'])
