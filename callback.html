@@ -165,11 +165,31 @@
             }
             sendRequest({ banner }, 'تم تغيير البنر');
         }
-        function sendRequest(data, successMessage) {
-            let url = `https://discord.com/oauth2/authorize?client_id=1344091056601301063&response_type=code&redirect_uri=https://faizfaiz1.github.io/robot-tax/callback&scope=identify guilds.members.read&state=${encodeURIComponent(JSON.stringify(data))}`;
-            window.location.href = url;
+function sendRequest(data, successMessage) {
+    fetch("http://192.168.216.103:5000/update_profile", {  // ضع هنا IP السيرفر الخاص بك
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            user_id: "معرّف المستخدم الخاص بك", // تحتاج إلى الحصول عليه من Discord OAuth
+            ...data
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.message) {
             showNotification(successMessage);
+        } else {
+            showNotification(result.error || "حدث خطأ غير معروف", "red");
         }
+    })
+    .catch(error => {
+        showNotification("فشل الاتصال بالسيرفر", "red");
+        console.error(error);
+    });
+}
+
     </script>
 </body>
 </html>
