@@ -3,23 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إعادة التوجيه - ديسكورد</title>
-    <script>
-        // استخراج الكود من الرابط
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get("code");
-
-        if (code) {
-            // قم بإرسال الكود إلى خادمك (إذا كنت تستخدم خادمًا لجلب التوكين)
-            console.log("تم الحصول على الكود:", code);
-            
-            // يمكنك تخزينه أو إرساله إلى خادم خارجي لمعالجة المصادقة
-            document.body.innerHTML = "<h2>تم الربط بنجاح! يمكنك الآن العودة إلى التطبيق.</h2>";
-        } else {
-            document.body.innerHTML = "<h2>حدث خطأ أثناء محاولة تسجيل الدخول إلى ديسكورد.</h2>";
+    <title>Make Your Account Automatic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #1b263b, #0d1b2a);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            animation: fadeIn 1s ease-in-out;
         }
-    </script>
+        .panel {
+            background: rgba(27, 38, 59, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0px 0px 20px #00C1FF;
+        }
+        .toggle-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0077B6;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .toggle-btn:hover { background: #005A8D; }
+        .disabled {
+            background: gray !important;
+            cursor: not-allowed;
+        }
+        .alert {
+            position: fixed;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff4d4d;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            transition: 0.5s;
+        }
+        .show-alert {
+            top: 20px;
+        }
+    </style>
 </head>
 <body>
+    <h2>Make Your Account Automatic</h2>
+    <div class="panel">
+        <div class="toggle-btn" onclick="toggleFeature(this)">
+            <span>اسم عشوائي كل يوم</span>
+            <i class="fas fa-toggle-off"></i>
+        </div>
+        <br>
+        <div class="toggle-btn disabled" onclick="showAlert()">
+            <span>استلام راتب برو بوت تلقائياً</span>
+            <i class="fas fa-toggle-off"></i>
+        </div>
+    </div>
+    <div id="alert" class="alert">هذه الخاصية قيد الصيانة</div>
+    <script>
+        function toggleFeature(element) {
+            let icon = element.querySelector("i");
+            if (icon.classList.contains("fa-toggle-off")) {
+                icon.classList.remove("fa-toggle-off");
+                icon.classList.add("fa-toggle-on");
+                element.style.background = "#00C1FF";
+            } else {
+                icon.classList.remove("fa-toggle-on");
+                icon.classList.add("fa-toggle-off");
+                element.style.background = "#0077B6";
+            }
+        }
+        function showAlert() {
+            let alertBox = document.getElementById("alert");
+            alertBox.classList.add("show-alert");
+            setTimeout(() => { alertBox.classList.remove("show-alert"); }, 3000);
+        }
+    </script>
 </body>
 </html>
