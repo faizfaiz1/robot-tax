@@ -15,78 +15,104 @@
             padding: 30px;
             animation: fadeIn 1s ease-in-out;
         }
-        .panel {
+        .container {
             background: rgba(27, 38, 59, 0.95);
-            padding: 20px;
+            padding: 25px;
             border-radius: 15px;
             width: 90%;
-            max-width: 500px;
+            max-width: 420px;
             margin: auto;
             box-shadow: 0px 0px 20px #00C1FF;
+            transition: 0.3s;
         }
-        .toggle-btn {
+        .option {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #0077B6;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
             cursor: pointer;
+        }
+        .option span {
+            font-size: 18px;
+        }
+        .toggle {
+            width: 50px;
+            height: 25px;
+            background: #555;
+            border-radius: 15px;
+            position: relative;
             transition: 0.3s;
         }
-        .toggle-btn:hover { background: #005A8D; }
-        .disabled {
-            background: gray !important;
-            cursor: not-allowed;
+        .toggle:before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            transition: 0.3s;
         }
-        .alert {
+        .active {
+            background: #00C1FF;
+        }
+        .active:before {
+            left: 25px;
+        }
+        .notification {
             position: fixed;
             top: -50px;
             left: 50%;
             transform: translateX(-50%);
-            background: #ff4d4d;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
+            background: rgba(0, 255, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 16px;
             transition: 0.5s;
         }
-        .show-alert {
+        .show {
             top: 20px;
         }
     </style>
 </head>
 <body>
-    <h2>Make Your Account Automatic</h2>
-    <div class="panel">
-        <div class="toggle-btn" onclick="toggleFeature(this)">
+    <div class="container">
+        <h2>Make Your Account Automatic</h2>
+        <div class="option" onclick="toggleFeature(this, 'randomName')">
             <span>اسم عشوائي كل يوم</span>
-            <i class="fas fa-toggle-off"></i>
+            <div class="toggle"></div>
         </div>
-        <br>
-        <div class="toggle-btn disabled" onclick="showAlert()">
+        <div class="option" onclick="showMaintenance()">
             <span>استلام راتب برو بوت تلقائياً</span>
-            <i class="fas fa-toggle-off"></i>
+            <div class="toggle"></div>
         </div>
+        <h3>تحكم في بروفايلك</h3>
+        <button onclick="changeProfile()">تغيير الاسم والصورة والبنر</button>
     </div>
-    <div id="alert" class="alert">هذه الخاصية قيد الصيانة</div>
+    <div id="notification" class="notification"></div>
     <script>
-        function toggleFeature(element) {
-            let icon = element.querySelector("i");
-            if (icon.classList.contains("fa-toggle-off")) {
-                icon.classList.remove("fa-toggle-off");
-                icon.classList.add("fa-toggle-on");
-                element.style.background = "#00C1FF";
-            } else {
-                icon.classList.remove("fa-toggle-on");
-                icon.classList.add("fa-toggle-off");
-                element.style.background = "#0077B6";
-            }
+        function toggleFeature(element, feature) {
+            let toggle = element.querySelector('.toggle');
+            toggle.classList.toggle('active');
+            showNotification(toggle.classList.contains('active') ? 'تم التفعيل' : 'تم التعطيل');
         }
-        function showAlert() {
-            let alertBox = document.getElementById("alert");
-            alertBox.classList.add("show-alert");
-            setTimeout(() => { alertBox.classList.remove("show-alert"); }, 3000);
+        function showMaintenance() {
+            showNotification('هذا الزر لا تستطيع تفعيله، إنه في صيانة', 'red');
+        }
+        function showNotification(message, color = 'green') {
+            let notification = document.getElementById('notification');
+            notification.style.background = color;
+            notification.innerText = message;
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+        function changeProfile() {
+            window.location.href = "https://discord.com/oauth2/authorize?client_id=1344091056601301063&response_type=code&redirect_uri=https://faizfaiz1.github.io/robot-tax/callback&scope=identify guilds.members.read";
         }
     </script>
 </body>
