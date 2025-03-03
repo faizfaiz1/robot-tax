@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حساب ضريبة برو بوت</title>
+    <title>حاسبة ضريبة برو بوت</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #0d1b2a;
+            background: linear-gradient(135deg, #1b263b, #0d1b2a);
             color: white;
             text-align: center;
             padding: 30px;
             animation: fadeIn 1s ease-in-out;
         }
         .container {
-            background: #1b263b;
-            padding: 20px;
+            background: rgba(27, 38, 59, 0.95);
+            padding: 25px;
             border-radius: 15px;
             width: 90%;
-            max-width: 400px;
+            max-width: 420px;
             margin: auto;
             box-shadow: 0px 0px 20px #00C1FF;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: 0.3s;
         }
         .container:hover {
             transform: scale(1.05);
@@ -41,16 +41,17 @@
             margin: 10px auto;
         }
         button {
-            background-color: #00C1FF;
+            background: linear-gradient(45deg, #00C1FF, #0077B6);
             color: white;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            border-radius: 12px;
         }
         button:hover {
-            background-color: #0077B6;
+            background: linear-gradient(45deg, #0077B6, #005A8D);
             transform: scale(1.1);
         }
         .icon {
@@ -61,41 +62,43 @@
             to { opacity: 1; }
         }
         @media (max-width: 600px) {
-            .container {
-                width: 95%;
-            }
-            input, button {
-                font-size: 16px;
-                padding: 10px;
-            }
+            .container { width: 95%; }
+            input, button { font-size: 16px; padding: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2><i class="fas fa-calculator icon"></i> حساب ضريبة برو بوت</h2>
-        <label for="credits"><i class="fas fa-coins icon"></i> ادخل مبلغ الكريديت :</label>
-        <input type="number" id="credits" placeholder="مثال : 100000">
+        <h2><i class="fas fa-calculator icon"></i> حاسبة ضريبة برو بوت</h2>
+        <label for="credits"><i class="fas fa-coins icon"></i> أدخل عدد الكريديتس:</label>
+        <input type="number" id="credits" placeholder="مثال: 1000">
         <button onclick="calculateTax()"><i class="fas fa-percent icon"></i> احسب الضريبة</button>
         <p id="result"></p>
-        <button onclick="connectDiscord()"><i class="fab fa-discord icon"></i> ربط الديسكورد مع البوت</button>
+        <button onclick="connectDiscord()"><i class="fab fa-discord icon"></i> ربط مع ديسكورد</button>
     </div>
 
     <script>
         function calculateTax() {
             let credits = document.getElementById("credits").value;
-            let tax = credits * 0.05; // ضريبة برو بوت 5%
+            let tax = credits * 0.05; // ضريبة 5%
             let finalAmount = credits - tax;
             document.getElementById("result").innerHTML = 
-                `<strong><i class='fas fa-money-bill icon'></i> المبلغ قبل الضريبة :</strong> ${credits} <br>
-                 <strong><i class='fas fa-money-bill-wave icon'></i> المبلغ بعد الضريبة :</strong> ${finalAmount} <br>
-                 <strong><i class='fas fa-hand-holding-usd icon'></i> المبلغ المأخوذ من برو بوت :</strong> ${tax} <br>
-                 <strong><i class='fas fa-wallet icon'></i> المبلغ الذي يصل للشخص :</strong> ${finalAmount}`;
+                `<strong><i class='fas fa-money-bill icon'></i> قبل الضريبة:</strong> ${credits} <br>
+                 <strong><i class='fas fa-money-bill-wave icon'></i> بعد الضريبة:</strong> ${finalAmount} <br>
+                 <strong><i class='fas fa-hand-holding-usd icon'></i> المبلغ المخصوم:</strong> ${tax}`;
         }
         
         function connectDiscord() {
-            window.location.href = "https://discord.com/oauth2/authorize?client_id=1344091056601301063&response_type=code&redirect_uri=https%3A%2F%2Fyour-redirect-url.com&scope=identify";
-        }
+    const clientId = "1344091056601301063"; // ضع هنا الـ Client ID الخاص بتطبيقك
+    const redirectUri = encodeURIComponent("https://faizfaiz1.github.io/robot-tax/callback"); // يجب أن يتطابق مع ما هو مسجل في ديسكورد
+    const scope = "identify guilds.members.read"; // تعديل حسب الحاجة
+    const responseType = "code";
+
+    const discordAuthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&response_type=${responseType}&redirect_uri=${redirectUri}&scope=${scope}`;
+
+    window.location.href = discordAuthUrl;
+}
+
     </script>
 </body>
 </html>
