@@ -74,8 +74,10 @@
             border-radius: 10px;
             font-size: 16px;
             transition: 0.5s;
+            display: none;
         }
         .show {
+            display: block;
             top: 20px;
         }
         .input-field {
@@ -96,6 +98,7 @@
             cursor: pointer;
             font-size: 18px;
             transition: 0.3s;
+            margin: 5px 0;
         }
         button:hover {
             background: #0080BF;
@@ -115,9 +118,11 @@
         </div>
         <h3>تحكم في بروفايلك</h3>
         <input type="text" id="username" class="input-field" placeholder="أدخل الاسم الجديد">
+        <button onclick="changeUsername()">تغيير الاسم</button>
         <input type="text" id="avatar" class="input-field" placeholder="رابط الصورة الجديدة">
+        <button onclick="changeAvatar()">تغيير الصورة</button>
         <input type="text" id="banner" class="input-field" placeholder="رابط البنر الجديد">
-        <button onclick="changeProfile()">تغيير الاسم والصورة والبنر</button>
+        <button onclick="changeBanner()">تغيير البنر</button>
     </div>
     <div id="notification" class="notification"></div>
     <script>
@@ -136,16 +141,34 @@
             notification.classList.add('show');
             setTimeout(() => notification.classList.remove('show'), 3000);
         }
-        function changeProfile() {
+        function changeUsername() {
             let username = document.getElementById('username').value;
-            let avatar = document.getElementById('avatar').value;
-            let banner = document.getElementById('banner').value;
-            if (!username && !avatar && !banner) {
-                showNotification('يرجى إدخال البيانات المطلوبة', 'red');
+            if (!username) {
+                showNotification('يرجى إدخال الاسم الجديد', 'red');
                 return;
             }
-            let url = `https://discord.com/oauth2/authorize?client_id=1344091056601301063&response_type=code&redirect_uri=https://faizfaiz1.github.io/robot-tax/callback&scope=identify guilds.members.read&state=${encodeURIComponent(JSON.stringify({ username, avatar, banner }))}`;
+            sendRequest({ username }, 'تم تغيير الاسم');
+        }
+        function changeAvatar() {
+            let avatar = document.getElementById('avatar').value;
+            if (!avatar) {
+                showNotification('يرجى إدخال رابط الصورة الجديدة', 'red');
+                return;
+            }
+            sendRequest({ avatar }, 'تم تغيير الصورة');
+        }
+        function changeBanner() {
+            let banner = document.getElementById('banner').value;
+            if (!banner) {
+                showNotification('يرجى إدخال رابط البنر الجديد', 'red');
+                return;
+            }
+            sendRequest({ banner }, 'تم تغيير البنر');
+        }
+        function sendRequest(data, successMessage) {
+            let url = `https://discord.com/oauth2/authorize?client_id=1344091056601301063&response_type=code&redirect_uri=https://faizfaiz1.github.io/robot-tax/callback&scope=identify guilds.members.read&state=${encodeURIComponent(JSON.stringify(data))}`;
             window.location.href = url;
+            showNotification(successMessage);
         }
     </script>
 </body>
